@@ -8,7 +8,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;  
 
 @Entity
-@Table(name = "") //esto lo tengo que cambiar, poner el nombre de la tabla de la base de datos 
+@Table(name = "task") //esto lo tengo que cambiar, poner el nombre de la tabla de la base de datos 
 public class Task {
 
      @Id
@@ -17,7 +17,7 @@ public class Task {
     private String Task;
     private Date StartDate;
     private Date EndDate;
-    private boolean isCompleted = true;
+    private boolean isCompleted = true; //HACE REFERENCIA A QUE SI ESTÁ LA TASK COMPLETADA O NO
 
     public Task(){
 

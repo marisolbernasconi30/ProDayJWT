@@ -1,5 +1,6 @@
 package com.app.proDay.controller;
 
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -24,48 +25,62 @@ public class TaskController {
         this.taskService = taskService;
     }
 
-    @GetMapping("/{id}")
-    public Task getTaskById(@PathVariable Long id) {
-        return taskService.getTaskById(id);
-     }
 
-     //-----------------------------------
+// Crea una nueva tarea. El cliente envía los datos de la tarea en el cuerpo de la solicitud, y el servidor devuelve la tarea creada con su ID asignado.
+//yo lo creo con los datos del constructor del entity (en la peticion de postman)
+    @PostMapping
+    public Task newTask(@RequestBody Task task){
+        return taskService.create(task); //esto ya esta creado en el service 
+    }
 
- @GetMapping ("/tasksList") //me lista las task
+
+// 
+
+ @GetMapping ("/tasksList") //me lista las task ¿TODAS ? O SEA, ACTIVAS E INACTIVAS
  public List<Task> listarTasks(){
      return taskService.listar();
  }
 
+ // puedo ver las tareas que COMPLETE, TAREAS INACTIVAS A HACER
 
-       // Devuelve la lista de tareas ya completadas
-    @GetMapping("/baja")
+@GetMapping("/baja")
     public List<Task> listarTaskBaja(){
         return taskService.listarBaja();
     }
 
-   
-
-    // POST /clientes
-    // Crea un nuevo cliente en la base de datos
-    @PostMapping
-    public Task newTask(@RequestBody Task task){
-        return taskService.create(task);
+// Devuelve la lista de tareas NO COMPLETADAS, TAREAS ACTIVAS, TAREAS PENDIENTES A HACER
+    @GetMapping("/alta")
+    public List<Task> listarTaskAlta(){
+        return taskService.listarAlta();
     }
 
-    // PUT /clientes/{id}
-    // Actualiza los datos de un cliente existente
-    @PutMapping("/{id}")
+    @GetMapping("/{id}") //ME TRAE LA TAREA POR ID 
+    public Task getTaskById(@PathVariable Long id) {
+        return taskService.getTaskById(id);
+    }
+
+
+ // 5) puedo eliminar de la faz de la tierra esa tarea //METODO DELETE 
+
+    @DeleteMapping("/eliminar/{id}")
+    public void deleteTask(@PathVariable Long id) {
+       taskService.delete(id);
+    }
+
+
+    @PutMapping("/{id}/done") //ESTE ES EL METODO PARA COMPLETAR LA TAREA, O SEA, PASARLA DE TRUE A FALSE
+    public Task doneTask(@PathVariable Long id){
+        return taskService.doneTask(id);
+    }
+
+
+    //puedo editar el contenido de  esa tarea // METODO PUT 
+
+    @PutMapping("/modificar/{id}")
     public Task updateTask(@PathVariable Long id, @RequestBody Task task){
         return taskService.update(id, task);
     }
 
-    // PUT /clientes/{id}/baja
-    // Da de baja al cliente (baja lógica, no se elimina de la base)
-    // se supone que además de dar de baja el cliente, tambien doy de baja sus inscripciones
-    @PutMapping("/{id}/done")
-    public Task doneTask(@PathVariable Long id){
-        return taskService.doneTask(id);
-    }
 
 
 }
