@@ -25,7 +25,8 @@ public class TaskService {
     }
 
     public Task getTaskById(Long id) { //METODO GET. ME TRAE LA TAREA POR ID
-        return taskRepository.findById(id).orElse(null);
+        return taskRepository.findById(id).orElseThrow(() -> new RuntimeException("Task no encontrada"));
+       
     }
 
     public List<Task> listarBaja() { //GET PARA LISTAR LAS TAREAS INACTIVAS, O SEA, LAS QUE YA COMPLETE

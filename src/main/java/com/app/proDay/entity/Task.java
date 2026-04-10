@@ -14,19 +14,19 @@ public class Task {
      @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String Task;
-    private Date StartDate;
-    private Date EndDate;
+    private String task;
+    private Date startDate;
+    private Date endDate;
     private boolean isCompleted = true; //HACE REFERENCIA A QUE SI ESTÁ LA TASK COMPLETADA O NO
 
     public Task(){
 
     }
 
-    public Task (String Task, Date StartDate, Date EndDate){
-        this.Task = Task;
-        this.StartDate = StartDate;
-        this.EndDate = EndDate; 
+    public Task (String task, Date startDate, Date endDate){
+        this.task = task;
+        this.startDate = startDate;
+        this.endDate = endDate; 
         
     }
     public Long getId() { // es el getter del id
@@ -38,27 +38,27 @@ public class Task {
     }
 
     public String getTask() { //es el getter del string task
-        return Task;
+        return task;
     }
 
     public void setTask(String task) { //es el setter del string task
-        Task = task;
+        this.task = task;
     }
 
     public Date getStartDate() { // es el getter de la fecha de inicio
-        return StartDate;
+        return startDate;
     }
 
     public void setStartDate(Date startDate) { // es el setter de la fecha de inicio
-        StartDate = startDate;
+        this.startDate = startDate;
     }
 
     public Date getEndDate() { //es el getter de la fecha de fin
-        return EndDate;
+        return endDate;
     }
 
     public void setEndDate(Date endDate) { // es el setter de la fecha de fin
-        EndDate = endDate;
+        this.endDate = endDate;
     }
 
     public boolean isCompleted() { // es el getter de la propiedad isCompleted
