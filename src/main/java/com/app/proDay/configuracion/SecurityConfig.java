@@ -18,7 +18,7 @@ import static org.springframework.security.config.Customizer.withDefaults;
 public class SecurityConfig {
 
 
-    @Bean // Este método crea un objeto que Spring va a usar automáticamente
+    @Bean // Este método crea un objeto que Spring va a usar automáticamente, lo inyecta donde hace falta
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
         http
