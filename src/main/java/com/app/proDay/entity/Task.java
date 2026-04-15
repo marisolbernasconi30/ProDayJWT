@@ -5,6 +5,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;  
 
 @Entity
@@ -18,6 +20,11 @@ public class Task {
     private Date startDate;
     private Date endDate;
     private boolean isCompleted = true; //HACE REFERENCIA A QUE SI ESTÁ LA TASK COMPLETADA O NO
+
+    // RELACIONO CON LA OTRA BASE DE DATOS
+    @ManyToOne
+    @JoinColumn(name = "usuario_id") // columna en la DB DE USUARIOS
+    private Usuario usuario;
 
     public Task(){
 
@@ -67,6 +74,10 @@ public class Task {
 
     public void setCompleted(boolean completed) { // es el setter de la propiedad isCompleted
         isCompleted = completed;
+    }
+
+    public void setUsuario(Usuario usuario2) {
+        this.usuario = usuario2;
     }
 
 }

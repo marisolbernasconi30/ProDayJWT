@@ -8,6 +8,6 @@ import com.app.proDay.entity.Usuario;
 
 public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
 
-    // 🔹 método clave para login
+    //  método del login que busca por nombre en la base de datos
     Optional<Usuario> findByUsername(String username);
 }

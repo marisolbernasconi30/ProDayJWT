@@ -1,5 +1,7 @@
 package com.app.proDay.service;
-
+/*
+ME BUSCA LOS USUARIOS DEL LOGIN EN LA BASE DE DATOS
+*/
 import org.springframework.security.core.userdetails.*;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Service;
@@ -21,11 +23,11 @@ public class CustomUserDetailsService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
-        // 🔹 Busca el usuario en la base de datos
+        //  Busca el usuario en la base de datos
         Usuario usuario = usuarioRepository.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException("Usuario no encontrado"));
 
-        // 🔹 Convierte tu entidad Usuario → UserDetails de Spring
+        //  Convierte tu entidad Usuario → UserDetails de Spring
         return new User(
                 usuario.getUsername(),
                 usuario.getPassword(),

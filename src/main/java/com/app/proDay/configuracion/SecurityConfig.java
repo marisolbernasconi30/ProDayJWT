@@ -1,5 +1,7 @@
 package com.app.proDay.configuracion;
-
+/*
+ACA VA LA CONFIGURACION DE SPRING, DEFINO LAS RUTAS PROTEGIDAS, STATELESS, FILTROS, ETC
+*/
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.Customizer;
@@ -21,14 +23,15 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
          http
-            // 🔹 Desactiva CSRF (API REST)
+            //  Desactiva CSRF (API REST)
             .csrf(csrf -> csrf.disable())
 
-            // 🔹 Configuración de rutas
+            //  Configuración de rutas
             .authorizeHttpRequests(auth -> auth
 
                 // 🔓 Rutas públicas (si tenés alguna)
                 .requestMatchers("/public/**").permitAll()
+                .requestMatchers("/usuarios/**").permitAll()
 
                 // 🔒 Todo lo demás requiere autenticación
                 .anyRequest().authenticated()

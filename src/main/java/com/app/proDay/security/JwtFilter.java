@@ -1,5 +1,7 @@
 package com.app.proDay.security;
-
+/*
+INTERCEPTA LAS REQUEST. LEE EL HEADER AUTHORIZATION, VALIDA EL TOKEN, AUTENTICA EL USUARIO EN SPRING
+*/
 public class JwtFilter {
 
 }

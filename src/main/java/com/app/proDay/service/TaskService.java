@@ -3,21 +3,33 @@ package com.app.proDay.service;
 import java.util.List;
 import org.springframework.stereotype.Service;
 import com.app.proDay.entity.Task;
+import com.app.proDay.entity.Usuario;
 import com.app.proDay.repository.TaskRepository;
 import jakarta.transaction.Transactional;
+import com.app.proDay.repository.UsuarioRepository;
 
 @Service
 public class TaskService {
 
     private final TaskRepository taskRepository;
-    public TaskService(TaskRepository taskRepository) {
+    private final UsuarioRepository usuarioRepository;
+    public TaskService(TaskRepository taskRepository,
+                       UsuarioRepository usuarioRepository) {
         this.taskRepository = taskRepository;
+        this.usuarioRepository = usuarioRepository;
     }
     
-    public Task create(Task task) { //este es el metodo POST, para CREAR una task
-        return taskRepository.save(task); //este metodo (save) lo heredamos en JPARepository, lo que hace es guardar el objeto task en la base de datos y devuelve el objeto guardado con su ID asignado
-        //por eso no es necesario crear el metodo en el repository
-    }
+   public Task crearTask(Task task, String username) {
+
+    //  Buscar usuario en DB
+    Usuario usuario = usuarioRepository.findByUsername(username)
+            .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+
+    // ASIGNAR USUARIO A LA TASK
+    task.setUsuario(usuario);
+
+    return taskRepository.save(task);
+}
 
 
     public List<Task> listar() {

@@ -1,5 +1,6 @@
 package com.app.proDay.controller;
 
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -28,10 +29,14 @@ public class TaskController {
 
 // Crea una nueva tarea. El cliente envía los datos de la tarea en el cuerpo de la solicitud, y el servidor devuelve la tarea creada con su ID asignado.
 //yo lo creo con los datos del constructor del entity (en la peticion de postman)
-    @PostMapping
-    public Task newTask(@RequestBody Task task){
-        return taskService.create(task); //esto ya esta creado en el service 
-    }
+    @PostMapping("/CreateTask")
+    public Task crearTask(@RequestBody Task task, Authentication authentication) {
+
+    //  usuario logueado
+    String username = authentication.getName();
+
+    return taskService.crearTask(task, username);
+}
 
 
 // 
