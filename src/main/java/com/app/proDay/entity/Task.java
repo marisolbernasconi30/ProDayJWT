@@ -10,7 +10,7 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;  
 
 @Entity
-@Table(name = "task") //esto lo tengo que cambiar, poner el nombre de la tabla de la base de datos 
+@Table(name = "task") // poner el nombre de la tabla de la base de datos 
 public class Task {
 
      @Id
