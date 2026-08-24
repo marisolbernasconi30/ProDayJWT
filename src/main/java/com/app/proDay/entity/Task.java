@@ -34,7 +34,7 @@ public class Task {
         this.task = task;
         this.startDate = startDate;
         this.endDate = endDate; 
-        
+        //aca esta raro
     }
     public Long getId() { // es el getter del id
         return id;
