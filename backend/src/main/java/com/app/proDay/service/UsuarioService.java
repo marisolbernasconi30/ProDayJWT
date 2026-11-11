@@ -4,7 +4,7 @@ crea al usuario
 */
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
+import com.app.proDay.entity.enums.Role;
 import com.app.proDay.entity.Usuario;
 import com.app.proDay.repository.UsuarioRepository;
 
@@ -28,7 +28,7 @@ public class UsuarioService {
         Usuario usuario = new Usuario();
         usuario.setUsername(username);
         usuario.setPassword(passwordEncriptada);
-        usuario.setRole("USER"); // rol por defecto
+        usuario.setRole(Role.USER); // rol por defecto
 
         return usuarioRepository.save(usuario);
     }

@@ -1,5 +1,8 @@
 package com.app.proDay.controller;
-
+ 
+import java.util.List;
+ 
+import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -8,84 +11,57 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+ 
+import com.app.proDay.dto.TaskRequest;
+import com.app.proDay.dto.TaskResponse;
 import com.app.proDay.service.TaskService;
-import com.app.proDay.entity.Task;
-import java.util.List;
-
-
+ 
+// Rutas del usuario logueado. Todas actúan SOLO sobre sus propias tareas:
+// authentication.getName() es el username de quien hace la request.
 @RestController
 @RequestMapping("/task")
-
 public class TaskController {
-
-
+ 
     private final TaskService taskService;
-
+ 
     public TaskController(TaskService taskService) {
         this.taskService = taskService;
     }
-
-
-// Crea una nueva tarea. El cliente envía los datos de la tarea en el cuerpo de la solicitud, y el servidor devuelve la tarea creada con su ID asignado.
-//yo lo creo con los datos del constructor del entity (en la peticion de postman)
+ 
     @PostMapping("/CreateTask")
-    public Task crearTask(@RequestBody Task task, Authentication authentication) {
-
-    //  usuario logueado
-    String username = authentication.getName();
-
-    return taskService.crearTask(task, username);
-}
-
-
-// 
-
- @GetMapping ("/tasksList") //me lista las task ¿TODAS ? O SEA, ACTIVAS E INACTIVAS
- public List<Task> listarTasks(){
-     return taskService.listar();
- }
-
- // puedo ver las tareas que COMPLETE, TAREAS INACTIVAS A HACER
-
-@GetMapping("/baja")
-    public List<Task> listarTaskBaja(){
-        return taskService.listarBaja();
+    public TaskResponse crear(@RequestBody TaskRequest request, Authentication authentication) {
+        return taskService.crear(request, authentication.getName());
     }
-
-// Devuelve la lista de tareas NO COMPLETADAS, TAREAS ACTIVAS, TAREAS PENDIENTES A HACER
-    @GetMapping("/alta")
-    public List<Task> listarTaskAlta(){
-        return taskService.listarAlta();
+ 
+    // Lista solo las tareas del usuario logueado
+    @GetMapping("/tasksList")
+    public List<TaskResponse> listar(Authentication authentication) {
+        return taskService.listarPropias(authentication.getName());
     }
-
-    @GetMapping("/{id}") //ME TRAE LA TAREA POR ID 
-    public Task getTaskById(@PathVariable Long id) {
-        return taskService.getTaskById(id);
+ 
+    @GetMapping("/{id}")
+    public TaskResponse obtener(@PathVariable Long id, Authentication authentication) {
+        return taskService.obtenerPropia(id, authentication.getName());
     }
-
-
- // 5) puedo eliminar de la faz de la tierra esa tarea //METODO DELETE 
-
-    @DeleteMapping("/eliminar/{id}")
-    public void deleteTask(@PathVariable Long id) {
-       taskService.delete(id);
-    }
-
-
-    @PutMapping("/{id}/done") //ESTE ES EL METODO PARA COMPLETAR LA TAREA, O SEA, PASARLA DE TRUE A FALSE
-    public Task doneTask(@PathVariable Long id){
-        return taskService.doneTask(id);
-    }
-
-
-    //puedo editar el contenido de  esa tarea // METODO PUT 
-
+ 
     @PutMapping("/modificar/{id}")
-    public Task updateTask(@PathVariable Long id, @RequestBody Task task){
-        return taskService.update(id, task);
+    public TaskResponse actualizar(@PathVariable Long id, @RequestBody TaskRequest request,
+            Authentication authentication) {
+        return taskService.actualizarPropia(id, request, authentication.getName());
     }
-
-
-
+ 
+    // Marca la tarea como completada (completed = true)
+    @PutMapping("/{id}/done")
+    public TaskResponse completar(@PathVariable Long id, Authentication authentication) {
+        return taskService.completarPropia(id, authentication.getName());
+    }
+ 
+    @DeleteMapping("/eliminar/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void eliminar(@PathVariable Long id, Authentication authentication) {
+        taskService.eliminarPropia(id, authentication.getName());
+    }
 }
+ 

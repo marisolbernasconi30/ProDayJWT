@@ -1,5 +1,4 @@
-package com.example.demo.config; // ajustá al paquete real
-
+package com.app.proDay.configuracion; 
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;

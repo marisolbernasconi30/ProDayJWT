@@ -1,5 +1,7 @@
 package com.app.proDay.entity;
 
+import com.app.proDay.entity.enums.Role;
+
 import jakarta.persistence.*;
 
 @Entity
@@ -16,11 +18,12 @@ public class Usuario {
     @Column(nullable = false)
     private String password;
 
-    private String role; // ej: USER, ADMIN
-
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private Role role = Role.USER;
     public Usuario() {}
 
-    public Usuario(String username, String password, String role) {
+    public Usuario(String username, String password, Role role) {
         this.username = username;
         this.password = password;
         this.role = role;
@@ -52,11 +55,11 @@ public class Usuario {
         this.password = password;
     }
 
-    public String getRole() {
+    public Role getRole() {
         return role;
     }
 
-    public void setRole(String role) {
+    public void setRole(Role role) {
         this.role = role;
     }
 }

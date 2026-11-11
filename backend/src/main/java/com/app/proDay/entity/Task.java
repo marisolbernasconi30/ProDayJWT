@@ -1,84 +1,96 @@
 package com.app.proDay.entity;
-import java.util.Date;
-
+ 
+import java.time.LocalDate;
+ 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;  
-
+import jakarta.persistence.Table;
+ 
 @Entity
-@Table(name = "task") // poner el nombre de la tabla de la base de datos 
+@Table(name = "task")
 public class Task {
-
-     @Id
+ 
+    @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+ 
+    @Column(nullable = false)
     private String task;
-    private Date startDate;
-    private Date endDate;
-    private boolean isCompleted = true; //HACE REFERENCIA A QUE SI ESTÁ LA TASK COMPLETADA O NO
-
-    // RELACIONO CON LA OTRA BASE DE DATOS
-    @ManyToOne
-    @JoinColumn(name = "usuario_id") // columna en la DB DE USUARIOS
+ 
+    private LocalDate startDate;
+    private LocalDate endDate;
+ 
+    // false = pendiente, true = completada
+    private boolean completed = false;
+ 
+    // Dueño de la tarea. Obligatorio: no existe una tarea sin usuario.
+    // LAZY: el usuario se carga solo cuando hace falta (los repositorios lo piden con @EntityGraph).
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "usuario_id", nullable = false)
     private Usuario usuario;
-
-    public Task(){
-
+ 
+    public Task() {
     }
-
-    public Task (String task, Date startDate, Date endDate){
+ 
+    public Task(String task, LocalDate startDate, LocalDate endDate, Usuario usuario) {
         this.task = task;
         this.startDate = startDate;
-        this.endDate = endDate; 
-        //aca esta raro
+        this.endDate = endDate;
+        this.usuario = usuario;
     }
-    public Long getId() { // es el getter del id
+ 
+    public Long getId() {
         return id;
     }
-
-     public void setId(Long id) {
+ 
+    public void setId(Long id) {
         this.id = id;
     }
-
-    public String getTask() { //es el getter del string task
+ 
+    public String getTask() {
         return task;
     }
-
-    public void setTask(String task) { //es el setter del string task
+ 
+    public void setTask(String task) {
         this.task = task;
     }
-
-    public Date getStartDate() { // es el getter de la fecha de inicio
+ 
+    public LocalDate getStartDate() {
         return startDate;
     }
-
-    public void setStartDate(Date startDate) { // es el setter de la fecha de inicio
+ 
+    public void setStartDate(LocalDate startDate) {
         this.startDate = startDate;
     }
-
-    public Date getEndDate() { //es el getter de la fecha de fin
+ 
+    public LocalDate getEndDate() {
         return endDate;
     }
-
-    public void setEndDate(Date endDate) { // es el setter de la fecha de fin
+ 
+    public void setEndDate(LocalDate endDate) {
         this.endDate = endDate;
     }
-
-    public boolean isCompleted() { // es el getter de la propiedad isCompleted
-        return isCompleted;
+ 
+    public boolean isCompleted() {
+        return completed;
     }
-
-    public void setCompleted(boolean completed) { // es el setter de la propiedad isCompleted
-        isCompleted = completed;
+ 
+    public void setCompleted(boolean completed) {
+        this.completed = completed;
     }
-
-    public void setUsuario(Usuario usuario2) {
-        this.usuario = usuario2;
+ 
+    public Usuario getUsuario() {
+        return usuario;
     }
-
+ 
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
+    }
 }
-
+ 
